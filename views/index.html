@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>0.1 Release - Yuriy</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <style>
+    div { width: 250px; border: thin solid; margin:10px auto;
+          padding-top: 15px; padding-right: 20px; padding-bottom: 15px; 
+          padding-left: 20px; box-shadow: 3px 3px #c9c9c9; border-radius: 4px;
+    }
+    </style>
+</head>
+<body>
+    <div>
+        <h3 style="text-align: center;">The Project</h3>
+        <h5 style="text-align: center;">Part A.</h5>
+    </div>
+    <div>
+        <form action="/findPhoneNumbers/" method="get">
+            <label for="getRq">GET request</label>
+            <input type="text" name="getRq">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <div>
+        <form action="/file/" method="post" enctype="multipart/form-data">
+            <label for="postRq">POST request</label>
+            <input type="file" id="postRq">
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+</body>
+</html>
