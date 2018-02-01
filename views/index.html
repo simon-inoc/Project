@@ -5,7 +5,7 @@
     <title>0.1 Release - Yuriy</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <style>
-    div { width: 250px; border: thin solid; margin:10px auto;
+    div { width: 250px; border: thin solid #2104a3; margin:10px auto;
           padding-top: 15px; padding-right: 20px; padding-bottom: 15px; 
           padding-left: 20px; box-shadow: 3px 3px #c9c9c9; border-radius: 4px;
     }
@@ -18,17 +18,21 @@
     </div>
     <div>
         <form action="/findPhoneNumbers/" method="get">
-            <label for="getRq">GET request</label>
-            <input type="text" name="getRq">
+            <label for="getRq">Phone number from text(GET)</label>
+            <input type="text" name="getRq" style="width:90%;">
             <input type="submit" value="Submit">
         </form>
     </div>
     <div>
         <form action="/file/" method="post" enctype="multipart/form-data">
-            <label for="postRq">POST request</label>
+            <label for="postRq">Phone number from file (POST)</label>
             <input type="file" id="postRq">
             <input type="submit" value="Submit">
         </form>
     </div>
+    <div>
+        <p style="text-align:right; margin: auto;">by <i>Yuriy Kartuzov</i></p>
+    </div>
+
 </body>
 </html>
