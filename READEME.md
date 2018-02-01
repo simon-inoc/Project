@@ -3,6 +3,7 @@
 To build and run the project - run the following commands from your command line tool
 
 * git clone https://github.com/YuriyKartuzov/Project
+* cd Project
 * npm install
 * npm start
 
