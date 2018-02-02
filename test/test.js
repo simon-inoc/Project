@@ -1,7 +1,7 @@
 let expect = require('chai').expect;
-let chai = require('chai');
-let app = require("../server.js");
-let fs = require('fs');
+let chai   = require('chai');
+let app    = require("../server.js");
+let fs     = require('fs');
 
 chai.use(require('chai-http')); // to simulare http request
 
