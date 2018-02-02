@@ -2,16 +2,22 @@
   "name": "project",
   "version": "1.0.0",
   "description": "OSD600",
-  "main": "server.js",
+  "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "node server.js"
+    "test": "mocha",
+    "start": "node app.js"
   },
   "author": "Yuriy Kartuzov",
   "license": "ISC",
   "dependencies": {
     "express": "^4.16.2",
+    "fs": "0.0.1-security",
     "google-libphonenumber": "^3.0.10",
-    "nodemon": "^1.14.11"
+    "multer": "^1.3.0"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "chai-http": "^3.0.0",
+    "mocha": "^5.0.0"
   }
 }

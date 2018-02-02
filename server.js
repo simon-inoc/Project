@@ -1,86 +1,84 @@
-const express = require("express");
-var path = require("path");
-var app = express();
-var HTTP_PORT = process.env.POST || 8080;
+/* Server */
+let express = require("express");
+let app     = express();
 
-//////////////////// Middleware ////////////////////////
-// GET root/index.html
-app.get("/", (req, res) => {
-    res.sendFile(path.join(__dirname + "/views/index.html"));
+/* Middleware */
+let fs          = require('fs');
+let path        = require('path');
+let phoneUtil   = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+let PNF         = require('google-libphonenumber').PhoneNumberFormat;
+let multer      = require('multer');
+let fileUpload  = multer({ dest: 'uploads/'}); // I don't get this. TODO: find out how multer works
+
+/* Http */
+app.get('/', (req, res) => {
+    res.status(200).sendFile(path.join(__dirname + "/views/index.html"));
 });
 
-// HTTP GET from URI
-app.get("/findPhoneNumbers/:text", (req, res) => {
-
-    var input = [req.params.text];
-    if(typeof input === "underfined")
-        input = '';
-
-    var result = findPhoneNumber(input);
-    res.json(result);
+// Manual GET
+app.get('/findPhoneNumbers/:str', (req, res) => {
     
-});
+    if(typeof req.params.str === 'undefined'){
+        res.status(200).json();
+        return;
+    }
 
-// HTTP GET from Form
-app.get("/findPhoneNumbers/", (req, res) => {
-
-    var input = req.query.getRq;
-    if(typeof input === "undefined") 
-        input = '';
-
-    var result = findPhoneNumber(input);
+    // findPhoneNumbers() always return an array
+    let result = findPhoneNumbers(req.params.str);
     res.json(result);
-})
-
-
-// HTTP POST
-app.post("/file", (req, res) => {
-    res.send("POST recieved, now we're ready to take over the world");
-})
-
-// Catch All -- to find out what .use does exactlyt! or maybe app.get('*', ...) is better
-app.use((req, res) => {
-    res.status(404).send("<p>Hmm... I think we took a wrong turn somewhere. Let's try going <a href='/'>home</a>.<br> (404 thingy - Page not found)</p>");
 });
 
+// Form GET
+app.get('/findPhoneNumbers/', (req, res) => {
+    if(typeof req.query.getRq === 'undefined'){
+        res.status(200).json();
+        return;
+    }
 
-/////// Whatever this is called: Busines Logic?/ Controller?/ Util? Buttom Layer? ///////////////////
+    // findPhoneNumbers() always return an array
+    let result = findPhoneNumbers(req.query.getRq);
+    res.json(result);
+});
 
-function findPhoneNumber(input){
-    var PNF = require('google-libphonenumber').PhoneNumberFormat;
-    var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
+// POST file
+app.post('/file', fileUpload.single("file"), function(req, res) {
+    if(!req.file){
+        res.status(400).send("No file was uploaded.");
+        return;
+    }
 
-    //var input2 = input.replace(/\D/g, '');
-    var input2 = input;
-    var number = '';
+    let fileRaw = fs.readFileSync(req.file.path);
+    let fileContent = Buffer.from(fileRaw, 'base64').toString('ascii');
+    
+    let result = findPhoneNumbers(fileContent);
+    res.json(result);
 
-    try{
-        number = phoneUtil.parse(input2, 'CA');
-        number = phoneUtil.format(number, PNF.INTERNATIONAL);
-    }catch(ex){ console.log(ex)} // debugging perposes
-    return number;
+});
+
+function findPhoneNumbers(str){
+    
+    var arr = str.split('\n');
+    var numberArr = [];
+    var phoneNumberArr = [];
+    
+    for(let i=0; i<arr.length; i++){
+        numberArr.push(arr[i].replace(/\D/g, ''));
+    }
+
+    for(let i=0; i<numberArr.length; i++){
+        try{
+            let phoneNum = phoneUtil.parse(numberArr[i], 'CA');
+            phoneNumberArr.push(phoneUtil.format(phoneNum, PNF.INTERNATIONAL));
+        }catch(err) { /*console.log(err);*/ }
+    }
+    
+    // briliant little function, that uses Set container constraint - all elements have to be unique  
+    // Props to Bakytzhan (Jean) Apetov
+    // or it is too clever according to @Devid ?
+    return Array.from(new Set(phoneNumberArr)); 
 }
 
-////////////////////////////////////////////////////
-// Party starts here
-app.listen(HTTP_PORT, () => console.log("Server is running on PORT: " + HTTP_PORT));
-
-
-
-
-
-/*
-function findPhoneNumber(input){
-    const PNF = require('google-libphonenumber').PhoneNumberFormat;
-    var phoneUtil = require('google-libphonenumber').PhoneNumberUtil.getInstance();
-    varinput2 = input.replace(/\D/g, '');
-
-    try{
-        var number = phoneUtil.parse(input2, 'CA');
-        number = phoneUtil.format(number, PNF.INTERNATIONAL);
-    }catch(ex){} // ignore
-    return number ? number: '';
-}
-
-
-*/
+// the party starts here
+app.listen(2035, () => {
+    console.log("The server is listening on PORT: 2035");
+}) 
