@@ -14,3 +14,5 @@ Please navigate to the following page in your browser: `http://localhost:8080` <
 
 Once there you can submit GET and POST requests throught the form. Alternitevly you may manually input the string to 
 be parsed. For that use the following URI. `http://localhost:8080/findPhoneNumbers/{...string...}`
+
+Tests may be run by running `npm test` command
