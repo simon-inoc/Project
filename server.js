@@ -78,7 +78,14 @@ function findPhoneNumbers(str){
     return Array.from(new Set(phoneNumberArr)); 
 }
 
+app.get('*', (req, res) =>{
+    res.status(404).send("Looks like we took a wrong turn somehere. Let's try going " +
+    "<a href='/'>home</a>.");
+})
+
 // the party starts here
-app.listen(2035, () => {
-    console.log("The server is listening on PORT: 2035");
+app.listen(2025, () => {
+    console.log("The server is listening on PORT: 2025");
 }) 
+
+module.exports = app;
