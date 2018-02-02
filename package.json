@@ -2,10 +2,10 @@
   "name": "project",
   "version": "1.0.0",
   "description": "OSD600",
-  "main": "app.js",
+  "main": "server.js",
   "scripts": {
     "test": "mocha",
-    "start": "node app.js"
+    "start": "node server.js"
   },
   "author": "Yuriy Kartuzov",
   "license": "ISC",
