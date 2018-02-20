@@ -84,8 +84,11 @@ app.get('*', (req, res) =>{
 })
 
 // the party starts here
-app.listen(2025, () => {
+// this is used when testing
+if (!module.parent) {
+    app.listen(2025);
     console.log("The server is listening on PORT: 2025");
-}) 
+}
+
 
 module.exports = app;
