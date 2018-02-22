@@ -9,6 +9,11 @@ let phoneUtil   = require('google-libphonenumber').PhoneNumberUtil.getInstance()
 let PNF         = require('google-libphonenumber').PhoneNumberFormat;
 let multer      = require('multer');
 let fileUpload  = multer({ dest: 'uploads/'}); // I don't get this. TODO: find out how multer works
+let exphbs      = require("express-handlebars");
+
+//Setting up handlebars
+app.engine(".hbs", exphbs({ extname: ".hbs"}));
+app.set("view engine", ".hbs");
 
 /* Http */
 app.get('/', (req, res) => {
@@ -25,7 +30,7 @@ app.get('/findPhoneNumbers/:str', (req, res) => {
 
     // findPhoneNumbers() always return an array
     let result = findPhoneNumbers(req.params.str);
-    res.json(result);
+    res.render('result', {data: result});
 });
 
 // Form GET
@@ -37,7 +42,7 @@ app.get('/findPhoneNumbers/', (req, res) => {
 
     // findPhoneNumbers() always return an array
     let result = findPhoneNumbers(req.query.getRq);
-    res.json(result);
+    res.render('result', {data: result});
 });
 
 // POST file
@@ -51,7 +56,7 @@ app.post('/file', fileUpload.single("file"), function(req, res) {
     let fileContent = Buffer.from(fileRaw, 'base64').toString('ascii');
     
     let result = findPhoneNumbers(fileContent);
-    res.json(result);
+    res.render('result', {data: result});
 
 });
 
